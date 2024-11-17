@@ -185,7 +185,6 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
   }
 
   const newItem = {
-    //id: menuItems.length + 1,
     id: lunchMenu.length + 1,
     name: req.body.name,
     description: req.body.description,
@@ -196,7 +195,6 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
     newItem.img_name = req.file.filename;
   }
 
-  //menuItems.push(newItem);
     lunchMenu.push(newItem);
 
   console.log(newItem);
