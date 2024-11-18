@@ -185,16 +185,19 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
   }
 
   const newItem = {
-    id: lunchMenu.length + 1,
+    //id: menuItems.length + 1,
+    _id: lunchMenu.length + 1,
     name: req.body.name,
     description: req.body.description,
     price: parseFloat(req.body.price),
   };
 
   if (req.file) {
-    newItem.img_name = req.file.filename;
+    // newItem.img_name = req.file.filename;
+    newItem.img_name = "images/" + req.file.filename;
   }
 
+  //menuItems.push(newItem);
     lunchMenu.push(newItem);
 
   console.log(newItem);
@@ -206,11 +209,12 @@ const validateMenuItem = (newItem) => {
     name: Joi.string().min(3).required(),
     description: Joi.string().min(5).required(),
     price: Joi.number().positive().required(),
+    img_name: Joi.string().optional(),
   });
 
   return schema.validate(newItem);
 };
 
-app.listen(3000, () => {
+app.listen(3003, () => {
   console.log("Listening...");
 });
