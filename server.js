@@ -170,7 +170,6 @@ app.get("/", (req, res) => {
 });
       
 app.get("/api/house_plans", (req, res) => {
-  //res.json(menuItems);
     res.json(lunchMenu);
 });
 
@@ -185,7 +184,6 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
   }
 
   const newItem = {
-    //id: menuItems.length + 1,
     _id: lunchMenu.length + 1,
     name: req.body.name,
     description: req.body.description,
@@ -197,7 +195,6 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
     newItem.img_name = "images/" + req.file.filename;
   }
 
-  //menuItems.push(newItem);
     lunchMenu.push(newItem);
 
   console.log(newItem);
@@ -207,7 +204,7 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
 const validateMenuItem = (newItem) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
-    description: Joi.string().min(5).required(),
+    description: Joi.string().min(1).required(),
     price: Joi.number().positive().required(),
     img_name: Joi.string().optional(),
   });
@@ -215,6 +212,6 @@ const validateMenuItem = (newItem) => {
   return schema.validate(newItem);
 };
 
-app.listen(3003, () => {
+app.listen(3006, () => {
   console.log("Listening...");
 });
