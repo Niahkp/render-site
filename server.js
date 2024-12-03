@@ -5,6 +5,7 @@ const Joi = require("joi");
 const multer = require("multer");
 app.use(cors());
 app.use(express.static("public"));
+app.use(express.json());
 
 
 const storage = multer.diskStorage({
@@ -201,9 +202,45 @@ app.post("/api/house_plans", upload.single("img"), (req, res) => {
   res.status(200).send(newItem);
 });
 
+app.put("/api/house_plans/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const item = lunchMenu.find((menuItem) => menuItem._id === id);
+
+  if (!item) {
+    return res.status(404).send("Item not found.");
+  }
+
+  const result = validateMenuItem(req.body);
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+
+  item.name = req.body.name;
+  item.price = req.body.price;
+  item.description = req.body.description;
+  if (req.file) {
+    item.img_name = "images/" + req.file.filename;
+  }
+
+  res.status(200).send(item);
+});
+
+app.delete("/api/house_plans/:id", (req, res) => {
+  console.log("Current lunchMenu:", lunchMenu);
+  const index = lunchMenu.find((menuItem) => menuItem._id === parseInt(req.params.id));
+
+  if (!index) {
+    return res.status(404).send("Item not found.");
+  }
+
+  const removedItem = lunchMenu.splice(index, 1);
+  res.status(200).send(removedItem[0]);
+});
+
 const validateMenuItem = (newItem) => {
   const schema = Joi.object({
-    name: Joi.string().min(3).required(),
+    name: Joi.string().min(1).required(),
     description: Joi.string().min(1).required(),
     price: Joi.number().positive().required(),
     img_name: Joi.string().optional(),
