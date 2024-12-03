@@ -5,7 +5,6 @@ const Joi = require("joi");
 const multer = require("multer");
 app.use(cors());
 app.use(express.static("public"));
-app.use(express.json());
 
 
 const storage = multer.diskStorage({
